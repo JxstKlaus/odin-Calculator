@@ -80,8 +80,9 @@ function operate(){
         let result = calculate(num1, op, num2);
         result = convertToExponential(result)
 
-        //putting the result back to the start of the array if not error -> [12, "-"]
-        if (!(typeof result === 'number')) isError = true
+        //putting the result back to the start of the array if not error and the parsed result (could be float or string due to convertToExponential) is a number -> [12, "-"]
+        console.log(typeof result)
+        if (!(typeof parseFloat(result) === 'number')) isError = true
         else operation.unshift(result)
         //remamber that now the result being displayed (can't be deleted)
         currentNumberText.textContent = result;
@@ -91,16 +92,12 @@ function operate(){
 function convertToExponential(n) {
     if (typeof n === 'number'){
         n = n.toFixed(4)
-        if (n.length > 12) {
-            console.log('dwad')
-            return parseFloat(n).toExponential(2);
-        }
-
+        if (n.length > 12) return parseFloat(n).toExponential(2);
     } 
-    return n;
+    return parseFloat(n);
 }
 function decimal(){
-    if (currentNumberText.textContent.at(-1) !== '.') currentNumberText.textContent += '.'
+    if (currentNumberText.textContent.at(-1) !== '.' && !resultDisplayed) currentNumberText.textContent += '.'
 }
 function deleteDigit(){
     if (!(resultDisplayed)) currentNumberText.textContent = currentNumberText.textContent.slice(0, -1);

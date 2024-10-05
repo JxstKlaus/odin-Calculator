@@ -9,8 +9,19 @@ body{
     width: 100vw;
     height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
+    background: radial-gradient(circle, rgba(63,94,251,.8) 0%, rgba(246, 253, 139, 0.3) 100%);
+}
+
+header{
+    margin-top: 2rem;
+    h1{
+        color: rgb(5, 0, 44);
+        font-weight: 800;
+        font-size: 4rem;
+    }
 }
 
 .calculator-body{
@@ -68,17 +79,39 @@ body{
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            transition: ease-in-out .2s;
             
         }
         .mod{
             font-size: 2rem;
         }
-        .button:hover{
-            background-color: white;
-            color: rgb(71, 71, 71);
-        }
         .equals{
             width: 10rem;
         }
+
+        .button:hover{
+            background-color: white;
+            color: rgb(71, 71, 71);
+            scale: 0.9;
+        }
+        .operator:hover{
+            background-color: orange;
+            color: white;
+        }
+        .del:hover{
+            background-color: rgb(252, 63, 63);
+            color: white;
+        }
+        .equals:hover{
+            background-color: rgb(141, 255, 141);
+            color: white;
+        }
+    }
+}
+
+footer{
+    margin-bottom: 1.4rem;
+    p{
+        color: rgb(5, 0, 44);
     }
 }
