@@ -7,6 +7,7 @@ let currentNumber = '', currentOperator = '';
 let resultDisplayed = false; // this variable makes sure that the partial results can't be deleted with the C button (only entered numbers)
 let equalsPressed = false;
 let isError = false;
+let isDecimal = false;
 
 const numbers = document.querySelectorAll(".number");
 const operators = document.querySelectorAll(".operator")
@@ -97,7 +98,11 @@ function convertToExponential(n) {
     return parseFloat(n);
 }
 function decimal(){
-    if (currentNumberText.textContent.at(-1) !== '.' && !resultDisplayed) currentNumberText.textContent += '.'
+    //if (currentNumberText.textContent.at(-1) !== '.' && !resultDisplayed) currentNumberText.textContent += '.'
+    if (!isDecimal && !resultDisplayed) {
+        currentNumberText.textContent += '.';
+        isDecimal = true
+    }
 }
 function deleteDigit(){
     if (!(resultDisplayed)) currentNumberText.textContent = currentNumberText.textContent.slice(0, -1);
@@ -110,6 +115,7 @@ function clearDisplay(){
     resultDisplayed = false
     equalsPressed = false
     isError = false
+    isDecimal = false
 }
 
 function calculate(num1, operator, num2){
