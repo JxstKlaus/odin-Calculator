@@ -37,30 +37,25 @@ operators.forEach(operator => {
         currentNumber = currentNumberText.textContent
         currentOperator = operator.textContent
         //error occurs if something like 50=12 is entered or divided by 0
-        if (!isError){
-            if (currentOperator === 'AC') clearDisplay();
-            else if (currentOperator === 'C') deleteDigit();
+        if (currentOperator === 'AC') clearDisplay();
+        else if (!isError){
+            
+            if (currentOperator === 'C') deleteDigit();
             else if (currentOperator === '.') decimal();
             else if ((currentNumber === '') || (resultDisplayed)) {
                 //if number was not entered OR the number we see is just only the result of the previous calculation step
                 //but an operator button was pressed then the operator has to be removed,
                 //then the newly pressed operator gets added and displayed --> this prevents jamming the array with operators and changes the operator to the latest pressed one
-                operation.pop()
+                sliceLength = operation.pop().length
                 if (operation.length > 0) {
                     operation.push(currentOperator)
-                    calculationText.textContent = calculationText.textContent.slice(0, -2) + `${currentOperator} `;
+                    calculationText.textContent = calculationText.textContent.slice(0, -sliceLength-1) + `${currentOperator} `;
                 }
-                //since the = is an operator too it rewrites the calculation (upper) window after you decide to continue the calculation just like windows' calculator does
-                if (equalsPressed) {
-                    calculationText.textContent = `${currentNumber} ${currentOperator} `;
-                    equalsPressed = false;
-                }
+                
             }
             //this executes if both a number and an operator is present
             else operate();
         }
-        else if (currentOperator === 'AC') clearDisplay();
-        
     });
 })
 
@@ -78,13 +73,14 @@ function operate(){
         let num1 = Number.parseFloat(operation.shift());
         let op = operation.shift();
         let num2 = Number.parseFloat(operation.shift());
+    
         let result = calculate(num1, op, num2);
-        result = convertToExponential(result)
-
+        result = convertToExponential(result);
+        
         //putting the result back to the start of the array if not error and the parsed result (could be float or string due to convertToExponential) is a number -> [12, "-"]
-        console.log(typeof result)
-        if (!(typeof parseFloat(result) === 'number')) isError = true
+        if (typeof parseFloat(result) !== NaN) isError = true
         else operation.unshift(result)
+
         //remamber that now the result being displayed (can't be deleted)
         currentNumberText.textContent = result;
         resultDisplayed = true;
@@ -94,8 +90,9 @@ function convertToExponential(n) {
     if (typeof n === 'number'){
         n = n.toFixed(4)
         if (n.length > 12) return parseFloat(n).toExponential(2);
+        return parseFloat(n);
     } 
-    return parseFloat(n);
+    return n;
 }
 function decimal(){
     //if (currentNumberText.textContent.at(-1) !== '.' && !resultDisplayed) currentNumberText.textContent += '.'
@@ -116,6 +113,7 @@ function clearDisplay(){
     equalsPressed = false
     isError = false
     isDecimal = false
+    console.log('cleared')
 }
 
 function calculate(num1, operator, num2){
