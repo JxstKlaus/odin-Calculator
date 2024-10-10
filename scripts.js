@@ -75,11 +75,15 @@ function operate(){
         let num2 = Number.parseFloat(operation.shift());
     
         let result = calculate(num1, op, num2);
-        result = convertToExponential(result);
+        
         
         //putting the result back to the start of the array if not error and the parsed result (could be float or string due to convertToExponential) is a number -> [12, "-"]
-        if (typeof parseFloat(result) !== NaN) isError = true
-        else operation.unshift(result)
+        if (typeof result !== "number") isError = true
+        else {
+            result = convertToExponential(result);
+            operation.unshift(result)
+        }
+        console.log(isError)
 
         //remamber that now the result being displayed (can't be deleted)
         currentNumberText.textContent = result;
